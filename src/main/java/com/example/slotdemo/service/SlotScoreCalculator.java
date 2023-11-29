@@ -1,11 +1,16 @@
 package com.example.slotdemo.service;
 
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class SlotScoreCalculator {
 
+    private final Map<Integer, Integer> odds = Map.ofEntries(
+            new AbstractMap.SimpleEntry<>(0, 0),
+            new AbstractMap.SimpleEntry<>(1, 10),
+            new AbstractMap.SimpleEntry<>(2, 40),
+            new AbstractMap.SimpleEntry<>(3, 100)
+    );
     private List<List<String>> wheels;
 
     public SlotScoreCalculator(List<List<String>> wheel) {
@@ -13,21 +18,35 @@ public class SlotScoreCalculator {
     }
 
     public int calculate(int bet) {
+
+//        for (List<String> wheel : wheels) {
+//            wheel.subList()
+//        }
+        int lines = getLines();
+        int odd = getOdd(lines);
+
+        return bet * odd;
+    }
+
+    private int getLines() {
         int line = 0;
         for (int i = 0; i < 3; i++) {
             int finalI = i;
-            Set<String> symbols = wheels.stream()
+            Set<String> differentSymbols = wheels.stream()
                     .map(wheel -> wheel.get(finalI))
                     .collect(Collectors.toSet());
 
-            if (symbols.size() == 1)
+            if (differentSymbols.size() == 1)
                 line++;
         }
-        int odd = 0;
-        if (line == 1) {
-            odd = 40;
-        }
+        return line;
+    }
 
-        return bet * odd;
+    private int getOdd(int line) {
+        int odd = odds.get(line);
+        if (Objects.isNull(odd)) {
+            throw new RuntimeException("Unsupported lines");
+        }
+        return odd;
     }
 }
