@@ -16,18 +16,19 @@ public class SlotScoreCalculator {
     }
 
     public int calculate(int bet) {
-        List<List<String>> screen = getScreen();
+        Screen screen = reelsToScreen();
         int odd = payTable.getOdd(screen);
         return bet * odd;
     }
 
-    private List<List<String>> getScreen() {
-        return reels.stream()
+    private Screen reelsToScreen() {
+        List<List<String>> rawScreen = reels.stream()
                 .map(reel -> {
                     int firstSymbolIndex = random.nextInt(reel.size());
                     return Stream.concat(reel.stream(), reel.stream())
                             .toList()
                             .subList(firstSymbolIndex, firstSymbolIndex + 3);
                 }).toList();
+        return new Screen(rawScreen);
     }
 }

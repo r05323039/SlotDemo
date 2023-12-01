@@ -12,7 +12,7 @@ import java.util.Random;
 class SlotScoreCalculatorTest {
 
     private final Random random = Mockito.mock(Random.class);
-    
+
 
     @Test
     void test01_lose() {
@@ -85,15 +85,6 @@ class SlotScoreCalculatorTest {
         int win = sut.calculate(10);
 
         Assertions.assertThat(win).isEqualTo(1000);
-    }
-
-    @Test
-    void test(){
-        List<String> list = List.of("A", "4", "2");
-
-        List<String> subList = list.subList(1, list.size());
-
-        System.out.println(subList);
     }
 
 }
