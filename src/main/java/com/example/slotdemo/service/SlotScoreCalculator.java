@@ -11,28 +11,36 @@ public class SlotScoreCalculator {
             new AbstractMap.SimpleEntry<>(2, 40),
             new AbstractMap.SimpleEntry<>(3, 100)
     );
+    private final Random random;
     private List<List<String>> wheels;
 
-    public SlotScoreCalculator(List<List<String>> wheel) {
+    public SlotScoreCalculator(List<List<String>> wheel, Random random) {
         this.wheels = wheel;
+        this.random = random;// 從建構子注入，測試才能控制行為
     }
 
     public int calculate(int bet) {
+        List<List<String>> screen = new ArrayList<>();
+        for (List<String> wheel : wheels) {
+            int firstSymbolIndex = random.nextInt(wheel.size());
+            List<String> subScreen = wheel.subList(firstSymbolIndex, firstSymbolIndex + 3);
+            screen.add(subScreen);
+        }
 
-//        for (List<String> wheel : wheels) {
-//            wheel.subList()
-//        }
-        int lines = getLines();
+        //
+
+
+        int lines = getLines(screen);
         int odd = getOdd(lines);
 
         return bet * odd;
     }
 
-    private int getLines() {
+    private int getLines(List<List<String>> screen) {
         int line = 0;
         for (int i = 0; i < 3; i++) {
             int finalI = i;
-            Set<String> differentSymbols = wheels.stream()
+            Set<String> differentSymbols = screen.stream()
                     .map(wheel -> wheel.get(finalI))
                     .collect(Collectors.toSet());
 
@@ -48,12 +56,5 @@ public class SlotScoreCalculator {
             throw new RuntimeException("Unsupported lines");
         }
         return odd;
-    }
-
-    public boolean tea(String code) {
-        if (Objects.isNull(code)) {
-            return false;
-        }
-        return !code.equals("0000");
     }
 }
