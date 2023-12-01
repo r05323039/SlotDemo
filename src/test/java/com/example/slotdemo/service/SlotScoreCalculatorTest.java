@@ -77,7 +77,7 @@ class SlotScoreCalculatorTest {
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2")
         );
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);//不轉動
 
         SlotScoreCalculator sut = new SlotScoreCalculator(wheels, random);
 
@@ -85,4 +85,14 @@ class SlotScoreCalculatorTest {
 
         Assertions.assertThat(win).isEqualTo(1000);
     }
+
+    @Test
+    void test(){
+        List<String> list = List.of("A", "4", "2");
+
+        List<String> subList = list.subList(1, list.size());
+
+        System.out.println(subList);
+    }
+
 }
