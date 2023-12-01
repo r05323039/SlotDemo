@@ -32,8 +32,4 @@ build/
 ### VS Code ###
 .vscode/
 .idea
-.mvn
-mvnw
-mvnw.cmd
-pom.xml
 .gitignore

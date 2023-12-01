@@ -72,4 +72,26 @@ class SlotScoreCalculatorTest {
 
         Assertions.assertThat(win).isEqualTo(1000);
     }
+    @Test
+    void tt(){
+        List<List<String>> wheel_one = List.of(
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2")
+        );
+        SlotScoreCalculator sut = new SlotScoreCalculator(wheel_one);
+
+
+        boolean result = sut.tea("0000");
+        Assertions.assertThat(result).isEqualTo(false);
+
+        boolean result1 = sut.tea("0001");
+        Assertions.assertThat(result1).isEqualTo(true);
+
+        boolean result2 = sut.tea(null);
+        Assertions.assertThat(result2).isEqualTo(false);
+
+    }
 }

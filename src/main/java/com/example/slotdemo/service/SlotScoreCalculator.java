@@ -49,4 +49,11 @@ public class SlotScoreCalculator {
         }
         return odd;
     }
+
+    public boolean tea(String code) {
+        if (Objects.isNull(code)) {
+            return false;
+        }
+        return !code.equals("0000");
+    }
 }
