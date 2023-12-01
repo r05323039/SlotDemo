@@ -1,7 +1,6 @@
 package com.example.slotdemo.service;
 
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
@@ -26,7 +25,7 @@ class SlotScoreCalculatorTest {
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(wheels, random, new PayTable());
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
 
         int win = sut.calculate(10);
 
@@ -44,7 +43,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(wheels, random, new PayTable());
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
 
         int win = sut.calculate(10);
 
@@ -62,7 +61,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(wheels, random, new PayTable());
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
 
         int win = sut.calculate(10);
 
@@ -80,7 +79,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(wheels, random, new PayTable());
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
 
         int win = sut.calculate(10);
 
