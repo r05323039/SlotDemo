@@ -14,7 +14,7 @@ public class PayTable {
         int lines = screen.countStraightLines();
 
         int odd = odds.get(lines);
-        if (Objects.isNull(odd)) {
+        if (!odds.containsKey(lines)) {
             throw new RuntimeException("Unsupported lines");
         }
         return odd;
