@@ -11,7 +11,7 @@ public class SlotScoreCalculator {
     }
 
     public SpinResult calculate(int bet) {
-        Screen screen = reels.reelsToScreen();
+        Screen screen = reels.spin();
         int odd = payTable.getOdd(screen);
         int win = bet * odd;
         return new SpinResult(win,screen);
