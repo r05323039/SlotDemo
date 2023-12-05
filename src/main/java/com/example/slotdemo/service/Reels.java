@@ -23,7 +23,7 @@ public final class Reels {
     }
 
 
-    public Screen spin() {
+    public void spin() {
         List<List<String>> rawScreen = this.rawReels.stream()
                 .map(reel -> {
                     int firstSymbolIndex = randomNumberGenerator.nextInt(reel.size());
@@ -33,7 +33,6 @@ public final class Reels {
                 }).toList();
 
         this.screen = new Screen(rawScreen);
-        return screen;
     }
 
     public Screen getScreen() {
