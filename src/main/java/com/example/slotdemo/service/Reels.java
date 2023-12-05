@@ -1,41 +1,32 @@
 package com.example.slotdemo.service;
 
+import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Stream;
 
 public final class Reels {
-    private final List<List<String>> rawReels;
     private final RandomNumberGenerator randomNumberGenerator;
-    private Screen screen;
+    private final List<Reel> reelList = new ArrayList<>();
 
     public Reels(List<List<String>> rawReels, RandomNumberGenerator randomNumberGenerator) {
-        this.rawReels = rawReels;
         this.randomNumberGenerator = randomNumberGenerator;
-        List<List<String>> rawScreen = this.rawReels.stream()
-                .map(reel -> {
-                    int firstSymbolIndex = 0;
-                    return Stream.concat(reel.stream(), reel.stream())
-                            .toList()
-                            .subList(firstSymbolIndex, firstSymbolIndex + 3);
-                }).toList();
 
-        this.screen = new Screen(rawScreen);
+        for (List<String> rawReel : rawReels) {
+            Reel reel = new Reel(rawReel, randomNumberGenerator);
+            reelList.add(reel);
+        }
     }
 
 
     public void spin() {
-        List<List<String>> rawScreen = this.rawReels.stream()
-                .map(reel -> {
-                    int firstSymbolIndex = randomNumberGenerator.nextInt(reel.size());
-                    return Stream.concat(reel.stream(), reel.stream())
-                            .toList()
-                            .subList(firstSymbolIndex, firstSymbolIndex + 3);
-                }).toList();
-
-        this.screen = new Screen(rawScreen);
+        for (Reel reel : reelList) {
+            reel.roll();
+        }
     }
 
     public Screen getScreen() {
-        return screen;
+        List<List<String>> rawScreen = reelList.stream()
+                .map(reel -> reel.getScreenColumn(3))
+                .toList();
+        return new Screen(rawScreen);
     }
 }
