@@ -42,6 +42,18 @@ class SlotScoreCalculatorTest {
                         )
                 )
         );
+
+        Assertions.assertThat(sut.getScreen()).isEqualTo(
+                new Screen(
+                        List.of(
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("2", "A", "1")
+                        )
+                )
+        );
     }
 
     @Test

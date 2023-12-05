@@ -18,6 +18,7 @@ public final class Reels {
                             .toList()
                             .subList(firstSymbolIndex, firstSymbolIndex + 3);
                 }).toList();
+        
         this.screen = new Screen(rawScreen);
     }
 
@@ -30,7 +31,10 @@ public final class Reels {
                             .toList()
                             .subList(firstSymbolIndex, firstSymbolIndex + 3);
                 }).toList();
-        return new Screen(rawScreen);
+
+        Screen screen = new Screen(rawScreen);
+        this.screen = screen;
+        return screen;
     }
 
     public Screen getScreen() {
