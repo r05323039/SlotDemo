@@ -1,14 +1,22 @@
 package com.example.slotdemo.service;
 
 import java.util.List;
-import java.util.Random;
 import java.util.stream.Stream;
 
-public record Reels(List<List<String>> rawReels, Random random) {
+public final class Reels {
+    private final List<List<String>> rawReels;
+    private final RandomNumberGenerator randomNumberGenerator;
+
+    public Reels(List<List<String>> rawReels, RandomNumberGenerator randomNumberGenerator) {
+        this.rawReels = rawReels;
+        this.randomNumberGenerator = randomNumberGenerator;
+    }
+
+
     public Screen reelsToScreen() {
         List<List<String>> rawScreen = this.rawReels.stream()
                 .map(reel -> {
-                    int firstSymbolIndex = this.random.nextInt(reel.size());
+                    int firstSymbolIndex = randomNumberGenerator.nextInt(reel.size());
                     return Stream.concat(reel.stream(), reel.stream())
                             .toList()
                             .subList(firstSymbolIndex, firstSymbolIndex + 3);

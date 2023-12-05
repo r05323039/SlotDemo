@@ -16,16 +16,16 @@ class SlotScoreCalculatorTest {
     @Test
     void test01_lose() {
         List<List<String>> wheels = List.of(
-                List.of("A", "3", "2"),
-                List.of("A", "3", "2"),
-                List.of("A", "3", "2"),
-                List.of("A", "3", "2"),
-                List.of("4", "2", "4")
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2")
         );
 
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1,1,1,1,2);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new RandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -43,7 +43,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new RandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -61,7 +61,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new RandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -79,7 +79,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, random));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new RandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
