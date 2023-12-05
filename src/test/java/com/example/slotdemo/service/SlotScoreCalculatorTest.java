@@ -23,13 +23,25 @@ class SlotScoreCalculatorTest {
                 List.of("A", "1", "2")
         );
 
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1,1,1,1,2);//不轉動
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
-        int win = sut.calculate(10).getValue();
+        SpinResult result = sut.calculate(10);
+        int win = result.getValue();
 
         Assertions.assertThat(win).isEqualTo(0);
+        Assertions.assertThat(result.getScreen()).isEqualTo(
+                new Screen(
+                        List.of(
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("1", "2", "A"),
+                                List.of("2", "A", "1")
+                        )
+                )
+        );
     }
 
     @Test
@@ -43,7 +55,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
         int win = sut.calculate(10).getValue();
 
