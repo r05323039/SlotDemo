@@ -27,7 +27,7 @@ class SlotScoreCalculatorTest {
 
         SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
 
-        int win = sut.calculate(10);
+        int win = sut.calculate(10).getValue();
 
         Assertions.assertThat(win).isEqualTo(0);
     }
@@ -45,7 +45,7 @@ class SlotScoreCalculatorTest {
 
         SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
 
-        int win = sut.calculate(10);
+        int win = sut.calculate(10).getValue();
 
         Assertions.assertThat(win).isEqualTo(100);
     }
@@ -63,7 +63,7 @@ class SlotScoreCalculatorTest {
 
         SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
-        int win = sut.calculate(10);
+        int win = sut.calculate(10).getValue();
 
         Assertions.assertThat(win).isEqualTo(400);
     }
@@ -81,7 +81,7 @@ class SlotScoreCalculatorTest {
 
         SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
-        int win = sut.calculate(10);
+        int win = sut.calculate(10).getValue();
 
         Assertions.assertThat(win).isEqualTo(1000);
     }

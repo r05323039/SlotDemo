@@ -13,6 +13,4 @@ public class NativeRandomNumberGenerator implements RandomNumberGenerator {
     public int nextInt(int bound) {
         return random.nextInt(bound);
     }
-
-
 }
