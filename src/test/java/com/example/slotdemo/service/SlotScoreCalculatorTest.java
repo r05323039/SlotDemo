@@ -25,7 +25,7 @@ class SlotScoreCalculatorTest {
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1,1,1,1,2);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new RandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -43,7 +43,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new RandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels,  new NativeRandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -61,7 +61,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new RandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
@@ -79,7 +79,7 @@ class SlotScoreCalculatorTest {
         );
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);//不轉動
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new RandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
 
         int win = sut.calculate(10);
 
