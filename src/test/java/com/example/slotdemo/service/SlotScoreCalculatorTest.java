@@ -98,4 +98,26 @@ class SlotScoreCalculatorTest {
         Assertions.assertThat(win).isEqualTo(1000);
     }
 
+    @Test
+    void test05_init() {
+        List<List<String>> wheels = List.of(
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2"),
+                List.of("A", "4", "2")
+        );
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+
+        Screen screen = sut.getScreen();
+
+        Assertions.assertThat(screen).isEqualTo(
+                new Screen(List.of(
+                        List.of("A", "4", "2"),
+                        List.of("A", "4", "2"),
+                        List.of("A", "4", "2"),
+                        List.of("A", "4", "2"),
+                        List.of("A", "4", "2")
+                )));
+    }
 }
