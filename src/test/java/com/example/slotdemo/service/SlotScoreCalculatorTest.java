@@ -21,16 +21,16 @@ class SlotScoreCalculatorTest {
     }
 
     // 執行
-    private void spin_base(int bet) {
+    private void do_spin_base(int bet) {
         spinResult = sut.spinBase(bet);
     }
 
     // 驗證
-    private void assertWin(int win) {
+    private void assert_win(int win) {
         Assertions.assertThat(spinResult.getValue()).isEqualTo(win);
     }
 
-    private void assertScreen(List<List<String>> rawScreen) {
+    private void assert_screen(List<List<String>> rawScreen) {
         Assertions.assertThat(spinResult.getScreen()).isEqualTo(new Screen(rawScreen));
     }
 
@@ -50,10 +50,10 @@ class SlotScoreCalculatorTest {
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);
 
-        spin_base(10);
+        do_spin_base(10);
 
-        assertWin(0);
-        assertScreen(List.of(
+        assert_win(0);
+        assert_screen(List.of(
                 List.of("1", "2", "A"),
                 List.of("1", "2", "A"),
                 List.of("1", "2", "A"),
@@ -78,9 +78,9 @@ class SlotScoreCalculatorTest {
         ));
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
 
-        spin_base(10);
+        do_spin_base(10);
 
-        assertWin(100);
+        assert_win(100);
     }
 
     @Test
@@ -98,9 +98,9 @@ class SlotScoreCalculatorTest {
         ));
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
 
-        spin_base(10);
+        do_spin_base(10);
 
-        assertWin(400);
+        assert_win(400);
     }
 
     @Test
@@ -119,9 +119,9 @@ class SlotScoreCalculatorTest {
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);
 
-        spin_base(10);
+        do_spin_base(10);
 
-        assertWin(1000);
+        assert_win(1000);
     }
 
     @Test
@@ -174,12 +174,12 @@ class SlotScoreCalculatorTest {
 
         sut.setFreeGameReels(freeGameReels);
 
-        spin_base(10);
+        do_spin_base(10);
 
         spin_free();
 
-        assertWin(5000);
-        assertScreen(List.of(
+        assert_win(5000);
+        assert_screen(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2")
