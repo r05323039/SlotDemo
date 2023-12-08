@@ -8,6 +8,7 @@ public class SlotScoreCalculator {
     private final Reels baseGameReels;
     private Reels freeGameReels;
     private int freeGameCount;
+    private int freeGameBet;
 
     public SlotScoreCalculator(PayTable table, Reels baseGameReels, Reels freeGameReels) {
         this.payTable = table;
@@ -24,11 +25,11 @@ public class SlotScoreCalculator {
         Screen screen = baseGameReels.getScreen();
         int odd = payTable.getOdd(screen);
         int win = bet * odd;
-        tryTriggerFreeGame(screen);
+        tryTriggerFreeGame(screen,bet);
         return new SpinResult(win, screen);
     }
 
-    private void tryTriggerFreeGame(Screen screen) {
+    private void tryTriggerFreeGame(Screen screen, int bet) {
         int sumA = 0;
         for (List<String> rawColumn : screen.rawScreen()) {
             long countA = rawColumn.stream()
@@ -38,6 +39,7 @@ public class SlotScoreCalculator {
         }
         if (sumA >= 10) {
             freeGameCount += 3;
+            freeGameBet = bet;
         }
     }
 
@@ -49,7 +51,7 @@ public class SlotScoreCalculator {
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
         int odd = getFreeGameOdd(screen);
-        int win = 10 * odd;
+        int win = freeGameBet * odd;
         tryDeactiveFreeGame();
         return new SpinResult(win, screen);
     }
