@@ -24,6 +24,7 @@ class SlotScoreCalculatorTest {
     private void do_spin_base(int bet) {
         spinResult = sut.spinBase(bet);
     }
+
     private void do_spin_free() {
         spinResult = sut.spinFreeGame();
     }
@@ -235,5 +236,28 @@ class SlotScoreCalculatorTest {
                 List.of("A", "A", "2"),
                 List.of("A", "2", "1")
         ));
+    }
+
+    @Test
+    void test09_can_not_play_base_in_free_mode() {
+        assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        do_spin_base(10);
+
+        Assertions.assertThatThrownBy(
+                () -> do_spin_base(10)
+        ).hasMessageContaining("wrong mode : Free Game");
     }
 }
