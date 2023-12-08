@@ -6,6 +6,7 @@ public class SlotScoreCalculator {
 
     private final PayTable payTable;
     private final Reels baseGameReels;
+    private final FreeGamePayTable free = new FreeGamePayTable();
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
@@ -50,7 +51,7 @@ public class SlotScoreCalculator {
 
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
-        int odd = getFreeGameOdd(screen);
+        int odd = free.getFreeGameOdd(screen);
         int win = freeGameBet * odd;
         tryDeactiveFreeGame();
         return new SpinResult(win, screen);
@@ -60,17 +61,8 @@ public class SlotScoreCalculator {
         freeGameCount--;
     }
 
-    private static int getFreeGameOdd(Screen screen) {
-        int odd = 0;
-        int line = screen.countStraightLines();
-        if (line == 3) {
-            odd = 500;
-        } else if (line == 2) {
-            odd = 300;
-        } else if (line == 1) {
-            odd = 100;
-        }
-        return odd;
+    private int getFreeGameOdd(Screen screen) {
+        return free.getFreeGameOdd(screen);
     }
 
     public Screen getScreen() {
