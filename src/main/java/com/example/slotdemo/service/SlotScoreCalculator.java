@@ -6,12 +6,12 @@ public class SlotScoreCalculator {
 
     private final PayTable baseGamePayTable;
     private final Reels baseGameReels;
-    private final FreeGamePayTable freeGamePayTable;
+    private final PayTable freeGamePayTable;
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
 
-    public SlotScoreCalculator(Reels baseGameReels, PayTable baseGamePayTable, Reels freeGameReels, FreeGamePayTable freeGamePayTable) {
+    public SlotScoreCalculator(Reels baseGameReels, PayTable baseGamePayTable, Reels freeGameReels, PayTable freeGamePayTable) {
         this.baseGameReels = baseGameReels;
         this.baseGamePayTable = baseGamePayTable;
         this.freeGameReels = freeGameReels;
@@ -62,10 +62,6 @@ public class SlotScoreCalculator {
         freeGameCount--;
     }
 
-    private int getFreeGameOdd(Screen screen) {
-        return freeGamePayTable.getOdd(screen);
-    }
-
     public Screen getScreen() {
         if (freeGameCount > 0) {
             return freeGameReels.getScreen();
@@ -74,7 +70,5 @@ public class SlotScoreCalculator {
         }
     }
 
-    public void setFreeGameReels(Reels freeGameReels) {
-        this.freeGameReels = freeGameReels;
-    }
+
 }
