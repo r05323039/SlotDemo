@@ -15,7 +15,7 @@ class SlotScoreCalculatorTest {
     // 建立假設
     private void assume_sut(List<List<String>> baseGameRawReels, List<List<String>> freeGameRawReels) {
         sut = new SlotScoreCalculator(
-                new Reels(baseGameRawReels, random), new PayTable(),
+                new Reels(baseGameRawReels, random), new BaseGamePayTable(),
                 new Reels(freeGameRawReels, random), new FreeGamePayTable());
     }
 
