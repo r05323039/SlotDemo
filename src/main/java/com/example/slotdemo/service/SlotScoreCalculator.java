@@ -31,7 +31,17 @@ public class SlotScoreCalculator {
     public SpinResult spinFreeGame() {
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
-        int odd = 500;
+
+        int odd = 0;
+        int line = screen.countStraightLines();
+        if (line == 3) {
+            odd = 500;
+        } else if (line == 2) {
+            odd = 300;
+        } else if (line == 1) {
+            odd = 100;
+        }
+
         int win = 10 * odd;
         return new SpinResult(win, screen);
 

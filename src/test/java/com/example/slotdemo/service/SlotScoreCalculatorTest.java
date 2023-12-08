@@ -24,6 +24,9 @@ class SlotScoreCalculatorTest {
     private void do_spin_base(int bet) {
         spinResult = sut.spinBase(bet);
     }
+    private void do_spin_free() {
+        spinResult = sut.spinFreeGame();
+    }
 
     // 驗證
     private void assert_win(int win) {
@@ -151,7 +154,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test06_free_game() {
+    void test06_free_game_three_line() {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -166,17 +169,9 @@ class SlotScoreCalculatorTest {
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
 
-        Reels freeGameReels = new Reels(List.of(
-                List.of("A", "A", "2"),
-                List.of("A", "A", "2"),
-                List.of("A", "A", "2")
-        ), random);
-
-        sut.setFreeGameReels(freeGameReels);
-
         do_spin_base(10);
 
-        spin_free();
+        do_spin_free();
 
         assert_win(5000);
         assert_screen(List.of(
@@ -186,7 +181,59 @@ class SlotScoreCalculatorTest {
         ));
     }
 
-    private void spin_free() {
-        spinResult = sut.spinFreeGame();
+    @Test
+    void test07_free_game_two_line() {
+        assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        do_spin_base(10);
+
+        do_spin_free();
+
+        assert_win(3000);
+        assert_screen(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ));
+    }
+
+    @Test
+    void test08_free_game_one_line() {
+        assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        do_spin_base(10);
+
+        do_spin_free();
+
+        assert_win(1000);
+        assert_screen(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
     }
 }
