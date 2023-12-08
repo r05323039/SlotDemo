@@ -5,24 +5,23 @@ import java.util.List;
 public class SlotScoreCalculator {
 
     private final PayTable payTable;
-    private final Reels reels;
+    private final Reels baseGameReels;
     private Reels freeGameReels;
     private int freeGameCount;
 
-    public SlotScoreCalculator(PayTable table, Reels reels, Reels freeGameReels) {
+    public SlotScoreCalculator(PayTable table, Reels baseGameReels, Reels freeGameReels) {
         this.payTable = table;
-        this.reels = reels;
+        this.baseGameReels = baseGameReels;
         this.freeGameReels = freeGameReels;
     }
 
-    public SpinResult spinBase(int bet) {
+    public SpinResult spinBase(int bet) throws WrongGameModeException {
         if (freeGameCount > 0) {
-            throw new RuntimeException("wrong mode : Free Game");
+            throw new WrongGameModeException("wrong mode : Free Game");
         }
 
-
-        reels.spin();
-        Screen screen = reels.getScreen();
+        baseGameReels.spin();
+        Screen screen = baseGameReels.getScreen();
         int odd = payTable.getOdd(screen);
         int win = bet * odd;
 
@@ -40,17 +39,9 @@ public class SlotScoreCalculator {
         return new SpinResult(win, screen);
     }
 
-    public Screen getScreen() {
-        return reels.getScreen();
-    }
-
-    public void setFreeGameReels(Reels freeGameReels) {
-        this.freeGameReels = freeGameReels;
-    }
-
-    public SpinResult spinFreeGame() {
+    public SpinResult spinFree() throws WrongGameModeException {
         if (freeGameCount <= 0) {
-            throw new RuntimeException("wrong mode : Base Game");
+            throw new WrongGameModeException("wrong mode : Base Game");
         } else {
             freeGameCount--;
         }
@@ -71,5 +62,16 @@ public class SlotScoreCalculator {
         int win = 10 * odd;
         return new SpinResult(win, screen);
 
+    }
+    public Screen getScreen() {
+        if (freeGameCount > 0) {
+            return freeGameReels.getScreen();
+        } else {
+            return baseGameReels.getScreen();
+        }
+    }
+
+    public void setFreeGameReels(Reels freeGameReels) {
+        this.freeGameReels = freeGameReels;
     }
 }

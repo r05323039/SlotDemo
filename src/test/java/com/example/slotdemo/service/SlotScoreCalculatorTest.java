@@ -21,12 +21,12 @@ class SlotScoreCalculatorTest {
     }
 
     // 執行
-    private void do_spin_base(int bet) {
+    private void do_spin_base(int bet) throws WrongGameModeException {
         spinResult = sut.spinBase(bet);
     }
 
-    private void do_spin_free() {
-        spinResult = sut.spinFreeGame();
+    private void do_spin_free() throws WrongGameModeException {
+        spinResult = sut.spinFree();
     }
 
     // 驗證
@@ -39,7 +39,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test01_lose() {
+    void test01_lose() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
@@ -66,9 +66,8 @@ class SlotScoreCalculatorTest {
         ));
     }
 
-
     @Test
-    void test02_one_line() {
+    void test02_one_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "3", "2"),
                 List.of("A", "3", "2"),
@@ -88,7 +87,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test03_two_line() {
+    void test03_two_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
@@ -108,7 +107,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test04_three_line() {
+    void test04_three_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
@@ -155,7 +154,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test06_free_game_three_line() {
+    void test06_free_game_three_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -183,7 +182,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test07_free_game_two_line() {
+    void test07_free_game_two_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -211,7 +210,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test08_free_game_one_line() {
+    void test08_free_game_one_line() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -239,7 +238,7 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test09_can_not_play_base_in_free_mode() {
+    void test09_can_not_play_base_in_free_mode() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -260,8 +259,9 @@ class SlotScoreCalculatorTest {
                 () -> do_spin_base(10)
         ).hasMessageContaining("wrong mode : Free Game");
     }
+
     @Test
-    void test10_free_mode_finish() {
+    void test10_free_mode_finish() throws WrongGameModeException {
         assume_sut(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
@@ -284,5 +284,31 @@ class SlotScoreCalculatorTest {
         Assertions.assertThatThrownBy(
                 () -> do_spin_free()
         ).hasMessageContaining("wrong mode : Base Game");
+    }
+
+    @Test
+    void test10_free_mode_get_screen() throws WrongGameModeException {
+        assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        do_spin_base(10);
+
+        Assertions.assertThat(sut.getScreen()).isEqualTo(
+                new Screen(List.of(
+                        List.of("A", "A", "2"),
+                        List.of("A", "A", "2"),
+                        List.of("A", "2", "1")
+                )));
     }
 }
