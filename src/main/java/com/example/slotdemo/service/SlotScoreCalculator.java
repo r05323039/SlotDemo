@@ -23,20 +23,24 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Free Game");
         }
 
+        SpinResult spinResult = getResult(bet);
+        tryTriggerFreeGame(spinResult.getScreen(), bet);
+        return new SpinResult(spinResult.getValue(), spinResult.getScreen());
+    }
+
+    private SpinResult getResult(int bet) {
         baseGameReels.spin();
         Screen screen = baseGameReels.getScreen();
         int odd = baseGamePayTable.getOdd(screen);
         int win = bet * odd;
-        tryTriggerFreeGame(screen, bet);
         return new SpinResult(win, screen);
     }
+
 
     private void tryTriggerFreeGame(Screen screen, int bet) {
         int sumA = 0;
         for (List<String> rawColumn : screen.rawScreen()) {
-            long countA = rawColumn.stream()
-                    .filter(s -> s.equals("A"))
-                    .count();
+            long countA = rawColumn.stream().filter(s -> s.equals("A")).count();
             sumA += countA;
         }
         if (sumA >= 10) {
@@ -69,6 +73,4 @@ public class SlotScoreCalculator {
             return baseGameReels.getScreen();
         }
     }
-
-
 }
