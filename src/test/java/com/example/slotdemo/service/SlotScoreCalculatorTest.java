@@ -260,4 +260,29 @@ class SlotScoreCalculatorTest {
                 () -> do_spin_base(10)
         ).hasMessageContaining("wrong mode : Free Game");
     }
+    @Test
+    void test10_free_mode_finish() {
+        assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        do_spin_base(10);
+        do_spin_free();
+        do_spin_free();
+        do_spin_free();
+
+        Assertions.assertThatThrownBy(
+                () -> do_spin_free()
+        ).hasMessageContaining("wrong mode : Base Game");
+    }
 }

@@ -49,6 +49,12 @@ public class SlotScoreCalculator {
     }
 
     public SpinResult spinFreeGame() {
+        if (freeGameCount <= 0) {
+            throw new RuntimeException("wrong mode : Base Game");
+        } else {
+            freeGameCount--;
+        }
+
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
 
