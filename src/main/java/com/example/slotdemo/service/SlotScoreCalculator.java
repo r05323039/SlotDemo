@@ -54,12 +54,9 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Base Game");
         }
 
-        freeGameReels.spin();
-        Screen screen = freeGameReels.getScreen();
-        int odd = freeGamePayTable.getOdd(screen);
-        int win = freeGameBet * odd;
+        SpinResult spinResult = runGameFlow(freeGameBet, freeGameReels, freeGamePayTable);
         tryDeactiveFreeGame();
-        return new SpinResult(win, screen);
+        return spinResult;
     }
 
     private void tryDeactiveFreeGame() {
