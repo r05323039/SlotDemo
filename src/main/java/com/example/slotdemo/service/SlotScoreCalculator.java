@@ -4,16 +4,16 @@ import java.util.List;
 
 public class SlotScoreCalculator {
 
-    private final PayTable payTable;
+    private final PayTable baseGamePayTable;
     private final Reels baseGameReels;
     private final FreeGamePayTable freeGamePayTable;
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
 
-    public SlotScoreCalculator(PayTable table, Reels baseGameReels, Reels freeGameReels, FreeGamePayTable freeGamePayTable) {
-        this.payTable = table;
+    public SlotScoreCalculator(Reels baseGameReels, PayTable baseGamePayTable, Reels freeGameReels, FreeGamePayTable freeGamePayTable) {
         this.baseGameReels = baseGameReels;
+        this.baseGamePayTable = baseGamePayTable;
         this.freeGameReels = freeGameReels;
         this.freeGamePayTable = freeGamePayTable;
     }
@@ -25,9 +25,9 @@ public class SlotScoreCalculator {
 
         baseGameReels.spin();
         Screen screen = baseGameReels.getScreen();
-        int odd = payTable.getOdd(screen);
+        int odd = baseGamePayTable.getOdd(screen);
         int win = bet * odd;
-        tryTriggerFreeGame(screen,bet);
+        tryTriggerFreeGame(screen, bet);
         return new SpinResult(win, screen);
     }
 
