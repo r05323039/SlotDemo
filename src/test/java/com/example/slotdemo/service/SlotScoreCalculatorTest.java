@@ -10,7 +10,7 @@ import java.util.Random;
 
 class SlotScoreCalculatorTest {
 
-    private final Random random = Mockito.mock(Random.class);
+    private final RandomNumberGenerator random = Mockito.mock(NativeRandomNumberGenerator.class);
 
     private SlotScoreCalculator sut;
 
@@ -18,7 +18,7 @@ class SlotScoreCalculatorTest {
 
     // 建立假設
     private SlotScoreCalculator assume_sut(List<List<String>> rawReels) {
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(rawReels, new NativeRandomNumberGenerator(random)));
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(rawReels, random));
         return sut;
     }
 
@@ -130,5 +130,37 @@ class SlotScoreCalculatorTest {
                         List.of("A", "4", "2"),
                         List.of("A", "4", "2")
                 )));
+    }
+
+    @Test
+    void test06_free_game() {
+        sut = assume_sut(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
+
+        Reels freeGameReels = new Reels(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2")
+        ), random);
+
+        sut.setFreeGameReels(freeGameReels);
+
+        spin(10);
+
+        spinResult = sut.spinFreeGame();
+
+        assertWin(5000);
+        assertScreen(List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2")
+        ));
     }
 }
