@@ -52,7 +52,7 @@ public class SlotScoreCalculator {
 
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
-        int odd = freeGamePayTable.getFreeGameOdd(screen);
+        int odd = freeGamePayTable.getOdd(screen);
         int win = freeGameBet * odd;
         tryDeactiveFreeGame();
         return new SpinResult(win, screen);
@@ -63,7 +63,7 @@ public class SlotScoreCalculator {
     }
 
     private int getFreeGameOdd(Screen screen) {
-        return freeGamePayTable.getFreeGameOdd(screen);
+        return freeGamePayTable.getOdd(screen);
     }
 
     public Screen getScreen() {

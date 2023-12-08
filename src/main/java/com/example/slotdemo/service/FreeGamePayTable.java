@@ -2,7 +2,7 @@ package com.example.slotdemo.service;
 
 public class FreeGamePayTable {
 
-    public int getFreeGameOdd(Screen screen) {
+    public int getOdd(Screen screen) {
         int odd = 0;
         int line = screen.countStraightLines();
         if (line == 3) {
