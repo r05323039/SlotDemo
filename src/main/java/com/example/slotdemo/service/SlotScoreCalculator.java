@@ -7,6 +7,7 @@ public class SlotScoreCalculator {
     private final PayTable baseGamePayTable;
     private final Reels baseGameReels;
     private final PayTable freeGamePayTable;
+    private final GameFlow gameFlow;
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
@@ -16,6 +17,7 @@ public class SlotScoreCalculator {
         this.baseGamePayTable = baseGamePayTable;
         this.freeGameReels = freeGameReels;
         this.freeGamePayTable = freeGamePayTable;
+        gameFlow = new GameFlow();
     }
 
     public SpinResult spinBase(int bet) throws WrongGameModeException {
@@ -23,19 +25,10 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Free Game");
         }
 
-        SpinResult spinResult = runGameFlow(bet, baseGameReels, baseGamePayTable);
+        SpinResult spinResult = gameFlow.runGameFlow(bet, baseGameReels, baseGamePayTable);
         tryTriggerFreeGame(spinResult.getScreen(), bet);
         return new SpinResult(spinResult.getValue(), spinResult.getScreen());
     }
-
-    private SpinResult runGameFlow(int bet, Reels reels, PayTable payTable) {
-        reels.spin();
-        Screen screen = reels.getScreen();
-        int odd = payTable.getOdd(screen);
-        int win = bet * odd;
-        return new SpinResult(win, screen);
-    }
-
 
     private void tryTriggerFreeGame(Screen screen, int bet) {
         int sumA = 0;
@@ -54,7 +47,7 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Base Game");
         }
 
-        SpinResult spinResult = runGameFlow(freeGameBet, freeGameReels, freeGamePayTable);
+        SpinResult spinResult = gameFlow.runGameFlow(freeGameBet, freeGameReels, freeGamePayTable);
         tryDeactiveFreeGame();
         return spinResult;
     }
