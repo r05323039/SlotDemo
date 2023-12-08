@@ -12,114 +12,113 @@ class SlotScoreCalculatorTest {
 
     private final Random random = Mockito.mock(Random.class);
 
+    private SlotScoreCalculator sut;
+
+    private SpinResult spinResult;
+
+    // 建立假設
+    private SlotScoreCalculator assume_sut(List<List<String>> rawReels) {
+        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(rawReels, new NativeRandomNumberGenerator(random)));
+        return sut;
+    }
+
+    // 執行
+    private void spin(int bet) {
+        spinResult = sut.calculate(bet);
+    }
+
+    // 驗證
+    private void assertWin(int win) {
+        Assertions.assertThat(spinResult.getValue()).isEqualTo(win);
+    }
+
+    private void assertScreen(List<List<String>> rawScreen) {
+        Assertions.assertThat(spinResult.getScreen()).isEqualTo(new Screen(rawScreen));
+    }
 
     @Test
     void test01_lose() {
-        List<List<String>> wheels = List.of(
+        sut = assume_sut(List.of(
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2")
-        );
+        ));
 
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);//不轉動
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+        spin(10);
 
-        SpinResult result = sut.calculate(10);
-        int win = result.getValue();
-
-        Assertions.assertThat(win).isEqualTo(0);
-        Assertions.assertThat(result.getScreen()).isEqualTo(
-                new Screen(
-                        List.of(
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("2", "A", "1")
-                        )
-                )
-        );
-
-        Assertions.assertThat(sut.getScreen()).isEqualTo(
-                new Screen(
-                        List.of(
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("1", "2", "A"),
-                                List.of("2", "A", "1")
-                        )
-                )
-        );
+        assertWin(0);
+        assertScreen(List.of(
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("2", "A", "1")
+        ));
     }
+
 
     @Test
     void test02_one_line() {
-        List<List<String>> wheels = List.of(
+        sut = assume_sut(List.of(
                 List.of("A", "3", "2"),
                 List.of("A", "3", "2"),
                 List.of("A", "3", "2"),
                 List.of("A", "3", "2"),
                 List.of("A", "2", "4")
-        );
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
+        ));
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+        spin(10);
 
-        int win = sut.calculate(10).getValue();
-
-        Assertions.assertThat(win).isEqualTo(100);
+        assertWin(100);
     }
 
     @Test
     void test03_two_line() {
-        List<List<String>> wheels = List.of(
+        sut = assume_sut(List.of(
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "3")
-        );
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);//不轉動
+        ));
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0);
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+        spin(10);
 
-        int win = sut.calculate(10).getValue();
-
-        Assertions.assertThat(win).isEqualTo(400);
+        assertWin(400);
     }
 
     @Test
     void test04_three_line() {
-        List<List<String>> wheels = List.of(
+        sut = assume_sut(List.of(
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2")
-        );
-        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);//不轉動
+        ));
 
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1);
 
-        int win = sut.calculate(10).getValue();
+        spin(10);
 
-        Assertions.assertThat(win).isEqualTo(1000);
+        assertWin(1000);
     }
 
     @Test
     void test05_init() {
-        List<List<String>> wheels = List.of(
+        sut = assume_sut(List.of(
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2"),
                 List.of("A", "4", "2")
-        );
-        SlotScoreCalculator sut = new SlotScoreCalculator(new PayTable(), new Reels(wheels, new NativeRandomNumberGenerator(random)));
+        ));
 
         Screen screen = sut.getScreen();
 
