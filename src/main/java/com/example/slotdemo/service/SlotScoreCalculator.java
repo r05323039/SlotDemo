@@ -6,13 +6,14 @@ public class SlotScoreCalculator {
 
     private final PayTable payTable;
     private Reels reels;
+    private Reels freeGameReels;
 
     public SlotScoreCalculator(PayTable table, Reels reels) {
         this.payTable = table;
         this.reels = reels;
     }
 
-    public SpinResult calculate(int bet) {
+    public SpinResult spinBase(int bet) {
         reels.spin();
         Screen screen = reels.getScreen();
         int odd = payTable.getOdd(screen);
@@ -25,6 +26,7 @@ public class SlotScoreCalculator {
     }
 
     public void setFreeGameReels(Reels freeGameReels) {
+        this.freeGameReels = freeGameReels;
     }
 
     public SpinResult spinFreeGame() {

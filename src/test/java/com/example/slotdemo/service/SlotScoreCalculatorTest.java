@@ -5,7 +5,6 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.util.List;
-import java.util.Random;
 
 
 class SlotScoreCalculatorTest {
@@ -24,7 +23,7 @@ class SlotScoreCalculatorTest {
 
     // 執行
     private void spin(int bet) {
-        spinResult = sut.calculate(bet);
+        spinResult = sut.spinBase(bet);
     }
 
     // 驗證
