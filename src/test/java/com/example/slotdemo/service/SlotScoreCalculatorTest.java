@@ -17,7 +17,7 @@ class SlotScoreCalculatorTest {
         sut = new SlotScoreCalculator(
                 new PayTable(),
                 new Reels(baseGameRawReels, random),
-                new Reels(freeGameRawReels, random));
+                new Reels(freeGameRawReels, random), new FreeGamePayTable());
     }
 
     // 執行

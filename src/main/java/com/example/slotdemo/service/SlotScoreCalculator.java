@@ -6,15 +6,16 @@ public class SlotScoreCalculator {
 
     private final PayTable payTable;
     private final Reels baseGameReels;
-    private final FreeGamePayTable free = new FreeGamePayTable();
+    private final FreeGamePayTable freeGamePayTable;
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
 
-    public SlotScoreCalculator(PayTable table, Reels baseGameReels, Reels freeGameReels) {
+    public SlotScoreCalculator(PayTable table, Reels baseGameReels, Reels freeGameReels, FreeGamePayTable freeGamePayTable) {
         this.payTable = table;
         this.baseGameReels = baseGameReels;
         this.freeGameReels = freeGameReels;
+        this.freeGamePayTable = freeGamePayTable;
     }
 
     public SpinResult spinBase(int bet) throws WrongGameModeException {
@@ -51,7 +52,7 @@ public class SlotScoreCalculator {
 
         freeGameReels.spin();
         Screen screen = freeGameReels.getScreen();
-        int odd = free.getFreeGameOdd(screen);
+        int odd = freeGamePayTable.getFreeGameOdd(screen);
         int win = freeGameBet * odd;
         tryDeactiveFreeGame();
         return new SpinResult(win, screen);
@@ -62,7 +63,7 @@ public class SlotScoreCalculator {
     }
 
     private int getFreeGameOdd(Screen screen) {
-        return free.getFreeGameOdd(screen);
+        return freeGamePayTable.getFreeGameOdd(screen);
     }
 
     public Screen getScreen() {
