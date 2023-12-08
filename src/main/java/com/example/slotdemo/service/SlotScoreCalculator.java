@@ -23,15 +23,15 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Free Game");
         }
 
-        SpinResult spinResult = getResult(bet);
+        SpinResult spinResult = runGameFlow(bet, baseGameReels, baseGamePayTable);
         tryTriggerFreeGame(spinResult.getScreen(), bet);
         return new SpinResult(spinResult.getValue(), spinResult.getScreen());
     }
 
-    private SpinResult getResult(int bet) {
-        baseGameReels.spin();
-        Screen screen = baseGameReels.getScreen();
-        int odd = baseGamePayTable.getOdd(screen);
+    private SpinResult runGameFlow(int bet, Reels reels, PayTable payTable) {
+        reels.spin();
+        Screen screen = reels.getScreen();
+        int odd = payTable.getOdd(screen);
         int win = bet * odd;
         return new SpinResult(win, screen);
     }
