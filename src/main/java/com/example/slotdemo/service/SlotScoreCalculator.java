@@ -7,7 +7,8 @@ public class SlotScoreCalculator {
     private final PayTable baseGamePayTable;
     private final Reels baseGameReels;
     private final PayTable freeGamePayTable;
-    private final GameFlow gameFlow;
+    private final GameFlow baseGameFlow;
+    private final GameFlow freeGameFlow;
     private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
@@ -17,7 +18,8 @@ public class SlotScoreCalculator {
         this.baseGamePayTable = baseGamePayTable;
         this.freeGameReels = freeGameReels;
         this.freeGamePayTable = freeGamePayTable;
-        gameFlow = new GameFlow();
+        baseGameFlow = new GameFlow(baseGameReels,baseGamePayTable);
+        freeGameFlow = new GameFlow(freeGameReels, freeGamePayTable);
     }
 
     public SpinResult spinBase(int bet) throws WrongGameModeException {
@@ -25,9 +27,19 @@ public class SlotScoreCalculator {
             throw new WrongGameModeException("wrong mode : Free Game");
         }
 
-        SpinResult spinResult = gameFlow.runGameFlow(bet, baseGameReels, baseGamePayTable);
+        SpinResult spinResult = baseGameFlow.runGameFlow(bet);
         tryTriggerFreeGame(spinResult.getScreen(), bet);
         return new SpinResult(spinResult.getValue(), spinResult.getScreen());
+    }
+
+    public SpinResult spinFree() throws WrongGameModeException {
+        if (freeGameCount <= 0) {
+            throw new WrongGameModeException("wrong mode : Base Game");
+        }
+
+        SpinResult spinResult = freeGameFlow.runGameFlow(freeGameBet);
+        tryDeactiveFreeGame();
+        return spinResult;
     }
 
     private void tryTriggerFreeGame(Screen screen, int bet) {
@@ -40,16 +52,6 @@ public class SlotScoreCalculator {
             freeGameCount += 3;
             freeGameBet = bet;
         }
-    }
-
-    public SpinResult spinFree() throws WrongGameModeException {
-        if (freeGameCount <= 0) {
-            throw new WrongGameModeException("wrong mode : Base Game");
-        }
-
-        SpinResult spinResult = gameFlow.runGameFlow(freeGameBet, freeGameReels, freeGamePayTable);
-        tryDeactiveFreeGame();
-        return spinResult;
     }
 
     private void tryDeactiveFreeGame() {
