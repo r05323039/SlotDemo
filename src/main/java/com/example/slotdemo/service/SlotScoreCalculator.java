@@ -19,7 +19,7 @@ public class SlotScoreCalculator {
         }
         SpinResult spinResult = baseGameFlow.runGameFlow(bet);
         tryTriggerFreeGame(spinResult.getScreen(), bet);
-        return new SpinResult(spinResult.getValue(), spinResult.getScreen());
+        return new SpinResult(spinResult.getWin(), spinResult.getScreen());
     }
 
     public SpinResult spinFree() throws WrongGameModeException {

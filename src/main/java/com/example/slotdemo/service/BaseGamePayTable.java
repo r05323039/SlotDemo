@@ -4,10 +4,10 @@ import java.util.*;
 
 public class BaseGamePayTable implements PayTable {
     final Map<Integer, Integer> odds = Map.ofEntries(
-            new AbstractMap.SimpleEntry<Integer, Integer>(0, 0),
-            new AbstractMap.SimpleEntry<Integer, Integer>(1, 10),
-            new AbstractMap.SimpleEntry<Integer, Integer>(2, 40),
-            new AbstractMap.SimpleEntry<Integer, Integer>(3, 100)
+            new AbstractMap.SimpleEntry<>(0, 0),
+            new AbstractMap.SimpleEntry<>(1, 10),
+            new AbstractMap.SimpleEntry<>(2, 40),
+            new AbstractMap.SimpleEntry<>(3, 100)
     );
 
     @Override

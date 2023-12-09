@@ -33,7 +33,7 @@ class SlotScoreCalculatorTest {
 
     // 驗證
     private void assert_win(int win) {
-        Assertions.assertThat(spinResult.getValue()).isEqualTo(win);
+        Assertions.assertThat(spinResult.getWin()).isEqualTo(win);
     }
 
     private void assert_screen(List<List<String>> rawScreen) {
