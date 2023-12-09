@@ -3,21 +3,12 @@ package com.example.slotdemo.service;
 import java.util.List;
 
 public class SlotScoreCalculator {
-
-    private final PayTable baseGamePayTable;
-    private final Reels baseGameReels;
-    private final PayTable freeGamePayTable;
     private final GameFlow baseGameFlow;
     private final GameFlow freeGameFlow;
-    private Reels freeGameReels;
     private int freeGameCount;
     private int freeGameBet;
 
     public SlotScoreCalculator(Reels baseGameReels, PayTable baseGamePayTable, Reels freeGameReels, PayTable freeGamePayTable) {
-        this.baseGameReels = baseGameReels;
-        this.baseGamePayTable = baseGamePayTable;
-        this.freeGameReels = freeGameReels;
-        this.freeGamePayTable = freeGamePayTable;
         baseGameFlow = new GameFlow(baseGameReels,baseGamePayTable);
         freeGameFlow = new GameFlow(freeGameReels, freeGamePayTable);
     }
@@ -26,7 +17,6 @@ public class SlotScoreCalculator {
         if (freeGameCount > 0) {
             throw new WrongGameModeException("wrong mode : Free Game");
         }
-
         SpinResult spinResult = baseGameFlow.runGameFlow(bet);
         tryTriggerFreeGame(spinResult.getScreen(), bet);
         return new SpinResult(spinResult.getValue(), spinResult.getScreen());
@@ -36,7 +26,6 @@ public class SlotScoreCalculator {
         if (freeGameCount <= 0) {
             throw new WrongGameModeException("wrong mode : Base Game");
         }
-
         SpinResult spinResult = freeGameFlow.runGameFlow(freeGameBet);
         tryDeactiveFreeGame();
         return spinResult;
@@ -60,9 +49,9 @@ public class SlotScoreCalculator {
 
     public Screen getScreen() {
         if (freeGameCount > 0) {
-            return freeGameReels.getScreen();
+            return freeGameFlow.getScreen();
         } else {
-            return baseGameReels.getScreen();
+            return baseGameFlow.getScreen();
         }
     }
 }
