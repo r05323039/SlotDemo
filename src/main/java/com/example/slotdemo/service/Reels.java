@@ -25,4 +25,17 @@ public final class Reels {
                 .toList();
         return new Screen(rawScreen);
     }
+
+    public List<Integer> getPositions() {
+        return reelList.stream()
+                .map(reel -> reel.getPosition())
+                .toList();
+    }
+
+    public void setPositions(List<Integer> positions) {
+        for (int i = 0; i < positions.size(); i++) {
+            Reel reel = this.reelList.get(i);
+            reel.setPosition(positions.get(i));
+        }
+    }
 }

@@ -338,17 +338,17 @@ class SlotScoreCalculatorTest {
 
         Memento memento = sut.toMemento();
 
-//        assume_sut(List.of(
-//                List.of("A", "1", "2"),
-//                List.of("A", "1", "2"),
-//                List.of("A", "1", "2"),
-//                List.of("A", "1", "2"),
-//                List.of("A", "1", "2")
-//        ), List.of(
-//                List.of("A", "A", "2"),
-//                List.of("A", "A", "2"),
-//                List.of("A", "A", "2")
-//        ));
+        assume_sut(List.of(
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2")
+        ));
 
         sut.restore(memento);
 

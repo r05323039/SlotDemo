@@ -7,6 +7,7 @@ public class Reel {
     private final List<String> grids;
     private final RandomNumberGenerator randomNumberGenerator;
     private int position;
+
     public Reel(List<String> grids, RandomNumberGenerator randomNumberGenerator) {
         this.grids = grids;
         this.randomNumberGenerator = randomNumberGenerator;
@@ -20,5 +21,13 @@ public class Reel {
         return Stream.concat(grids.stream(), grids.stream())
                 .toList()
                 .subList(position, position + columnSize);
+    }
+
+    public int getPosition() {
+        return position;
+    }
+
+    public void setPosition(Integer newPosition) {
+        position = newPosition;
     }
 }

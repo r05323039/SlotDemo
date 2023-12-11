@@ -1,5 +1,7 @@
 package com.example.slotdemo.service;
 
+import java.util.List;
+
 public class GameFlow {
     private Reels reels;
     private PayTable payTable;
@@ -19,5 +21,13 @@ public class GameFlow {
 
     public Screen getScreen() {
         return reels.getScreen();
+    }
+
+    public List<Integer> getPositions() {
+        return reels.getPositions();
+    }
+
+    public void restore(List<Integer> positions) {
+        reels.setPositions(positions);
     }
 }
