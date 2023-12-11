@@ -1,10 +1,9 @@
 package com.example.slotdemo.service;
 
-import java.util.List;
-
 public class SlotScoreCalculator {
     private final GameFlow baseGameFlow;
     private final GameFlow freeGameFlow;
+    private final FreeGameTriggerringRules freeGameTriggerringRules = new FreeGameTriggerringRules();
     private int freeGameCount;
     private int freeGameBet;
     private int sumA;
@@ -33,24 +32,19 @@ public class SlotScoreCalculator {
     }
 
     private void tryTriggerFreeGame(Screen screen, int bet) {
-        boolean isFreeGameTriggered = isFreeGameTriggered(screen);
+        boolean isFreeGameTriggered = freeGameTriggerringRules.isFreeGameTriggered(screen);
         if (isFreeGameTriggered) {
-            freeGameCount += addFreeGameCount();
+            freeGameCount += freeGameTriggerringRules.addFreeGameCount();
             freeGameBet = bet;
         }
     }
 
     private int addFreeGameCount() {
-        return 3;
+        return freeGameTriggerringRules.addFreeGameCount();
     }
 
     private boolean isFreeGameTriggered(Screen screen) {
-        int sumA = 0;
-        for (List<String> rawColumn : screen.rawScreen()) {
-            long countA = rawColumn.stream().filter(s -> s.equals("A")).count();
-            sumA += countA;
-        }
-        return sumA >= 10;
+        return freeGameTriggerringRules.isFreeGameTriggered(screen);
     }
 
     private void tryDeactiveFreeGame() {
