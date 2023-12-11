@@ -19,7 +19,7 @@ class SlotScoreCalculatorTest {
         final Reels freeGameReels = new Reels(freeGameRawReels, random);
         final FreeGamePayTable freeGamePayTable = new FreeGamePayTable();
         sut = new SlotScoreCalculator(
-                new GameFlow(baseGameReels, baseGamePayTable), new GameFlow(freeGameReels, freeGamePayTable));
+                new GameFlow(baseGameReels, baseGamePayTable), new GameFlow(freeGameReels, freeGamePayTable), new FreeGameTriggerringRules());
     }
 
     // 執行

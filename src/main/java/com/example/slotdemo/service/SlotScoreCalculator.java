@@ -3,14 +3,14 @@ package com.example.slotdemo.service;
 public class SlotScoreCalculator {
     private final GameFlow baseGameFlow;
     private final GameFlow freeGameFlow;
-    private final FreeGameTriggerringRules freeGameTriggerringRules = new FreeGameTriggerringRules();
+    private final FreeGameTriggerringRules freeGameTriggerringRules;
     private int freeGameCount;
     private int freeGameBet;
-    private int sumA;
 
-    public SlotScoreCalculator(GameFlow baseGameFlow, GameFlow freeGameFlow) {
+    public SlotScoreCalculator(GameFlow baseGameFlow, GameFlow freeGameFlow, FreeGameTriggerringRules freeGameTriggerringRules) {
         this.baseGameFlow = baseGameFlow;
         this.freeGameFlow = freeGameFlow;
+        this.freeGameTriggerringRules = freeGameTriggerringRules;
     }
 
     public SpinResult spinBase(int bet) throws WrongGameModeException {
@@ -37,14 +37,6 @@ public class SlotScoreCalculator {
             freeGameCount += freeGameTriggerringRules.addFreeGameCount();
             freeGameBet = bet;
         }
-    }
-
-    private int addFreeGameCount() {
-        return freeGameTriggerringRules.addFreeGameCount();
-    }
-
-    private boolean isFreeGameTriggered(Screen screen) {
-        return freeGameTriggerringRules.isFreeGameTriggered(screen);
     }
 
     private void tryDeactiveFreeGame() {
