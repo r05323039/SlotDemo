@@ -7,6 +7,7 @@ public class SlotScoreCalculator {
     private final GameFlow freeGameFlow;
     private int freeGameCount;
     private int freeGameBet;
+    private int sumA;
 
     public SlotScoreCalculator(GameFlow baseGameFlow, GameFlow freeGameFlow) {
         this.baseGameFlow = baseGameFlow;
@@ -32,15 +33,24 @@ public class SlotScoreCalculator {
     }
 
     private void tryTriggerFreeGame(Screen screen, int bet) {
+        boolean isFreeGameTriggered = isFreeGameTriggered(screen);
+        if (isFreeGameTriggered) {
+            freeGameCount += addFreeGameCount();
+            freeGameBet = bet;
+        }
+    }
+
+    private int addFreeGameCount() {
+        return 3;
+    }
+
+    private boolean isFreeGameTriggered(Screen screen) {
         int sumA = 0;
         for (List<String> rawColumn : screen.rawScreen()) {
             long countA = rawColumn.stream().filter(s -> s.equals("A")).count();
             sumA += countA;
         }
-        if (sumA >= 10) {
-            freeGameCount += 3;
-            freeGameBet = bet;
-        }
+        return sumA >= 10;
     }
 
     private void tryDeactiveFreeGame() {
