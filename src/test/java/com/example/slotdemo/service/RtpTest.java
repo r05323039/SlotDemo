@@ -1,6 +1,5 @@
 package com.example.slotdemo.service;
 
-
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -8,7 +7,6 @@ import java.util.List;
 import java.util.Random;
 
 public class RtpTest {
-
     private SlotScoreCalculator sut;
 
     private void assume_sut(List<List<String>> baseGameRawReels, List<List<String>> freeGameRawReels, RandomNumberGenerator random) {
@@ -17,7 +15,7 @@ public class RtpTest {
         final Reels freeGameReels = new Reels(freeGameRawReels, random);
         final FreeGamePayTable freeGamePayTable = new FreeGamePayTable();
         sut = new SlotScoreCalculator(
-                new GameFlow(baseGameReels, baseGamePayTable), new GameFlow(freeGameReels, freeGamePayTable), new FreeGameTriggerringRules());
+                new GameFlow(baseGameReels, baseGamePayTable), new GameFlow(freeGameReels, freeGamePayTable), new MyFreeGameTriggerringRules());
     }
 
     @Test
