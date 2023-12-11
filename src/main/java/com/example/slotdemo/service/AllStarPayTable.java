@@ -16,10 +16,9 @@ public class AllStarPayTable implements PayTable {
             }
         }
 
-        if (countA ==5){
+        if (countA == 5) {
             return 400;
         }
-
         return 200;
     }
 }

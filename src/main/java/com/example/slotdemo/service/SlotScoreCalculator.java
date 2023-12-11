@@ -54,4 +54,8 @@ public class SlotScoreCalculator {
             return baseGameFlow.getScreen();
         }
     }
+
+    public boolean isFreeGame() {
+        return freeGameCount > 0;
+    }
 }
