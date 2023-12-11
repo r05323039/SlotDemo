@@ -319,18 +319,21 @@ class SlotScoreCalculatorTest {
     }
 
     @Test
-    void test11_recovery() throws WrongGameModeException {
-        assume_sut(List.of(
+    void test11_base_game_recovery() throws WrongGameModeException {
+        List<List<String>> baseGameRawReels = List.of(
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2"),
                 List.of("A", "1", "2")
-        ), List.of(
+        );
+        List<List<String>> freeGameRawReels = List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2")
-        ));
+        );
+        
+        assume_sut(baseGameRawReels, freeGameRawReels);
 
         Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);
 
@@ -338,20 +341,9 @@ class SlotScoreCalculatorTest {
 
         Memento memento = sut.toMemento();
 
-        assume_sut(List.of(
-                List.of("A", "1", "2"),
-                List.of("A", "1", "2"),
-                List.of("A", "1", "2"),
-                List.of("A", "1", "2"),
-                List.of("A", "1", "2")
-        ), List.of(
-                List.of("A", "A", "2"),
-                List.of("A", "A", "2"),
-                List.of("A", "A", "2")
-        ));
+        assume_sut(baseGameRawReels, freeGameRawReels);
 
         sut.restore(memento);
-
 
         assert_sut_screen(List.of(
                 List.of("1", "2", "A"),
@@ -362,5 +354,41 @@ class SlotScoreCalculatorTest {
         ));
     }
 
+    @Test
+    void test12_free_game_recovery() throws WrongGameModeException {
+        List<List<String>> baseGameRawReels = List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "1")
+        );
+        List<List<String>> freeGameRawReels = List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        );
 
+        assume_sut(baseGameRawReels, freeGameRawReels);
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(0, 0, 0, 0, 0, 1, 0);
+
+        do_spin_base(10);
+
+        do_spin_free();
+
+        Memento memento = sut.toMemento();
+
+        assume_sut(baseGameRawReels, freeGameRawReels);
+
+        sut.restore(memento);
+
+        assert_sut_screen(List.of(
+                List.of("A", "2", "A"),
+                List.of("A", "A", "2"),
+                List.of("A", "2", "1")
+        ));
+
+        Assertions.assertThat(sut.getFreeGameCount()).isEqualTo(2);
+    }
 }
