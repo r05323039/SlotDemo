@@ -36,8 +36,12 @@ class SlotScoreCalculatorTest {
         Assertions.assertThat(spinResult.getWin()).isEqualTo(win);
     }
 
-    private void assert_screen(List<List<String>> rawScreen) {
+    private void assert_spinResult_screen(List<List<String>> rawScreen) {
         Assertions.assertThat(spinResult.getScreen()).isEqualTo(new Screen(rawScreen));
+    }
+
+    private void assert_sut_screen(List<List<String>> rawReels) {
+        Assertions.assertThat(sut.getScreen()).isEqualTo(new Screen(rawReels));
     }
 
     @Test
@@ -59,7 +63,7 @@ class SlotScoreCalculatorTest {
         do_spin_base(10);
 
         assert_win(0);
-        assert_screen(List.of(
+        assert_spinResult_screen(List.of(
                 List.of("1", "2", "A"),
                 List.of("1", "2", "A"),
                 List.of("1", "2", "A"),
@@ -176,7 +180,7 @@ class SlotScoreCalculatorTest {
         do_spin_free();
 
         assert_win(5000);
-        assert_screen(List.of(
+        assert_spinResult_screen(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2")
@@ -204,7 +208,7 @@ class SlotScoreCalculatorTest {
         do_spin_free();
 
         assert_win(3000);
-        assert_screen(List.of(
+        assert_spinResult_screen(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
                 List.of("A", "A", "1")
@@ -232,7 +236,7 @@ class SlotScoreCalculatorTest {
         do_spin_free();
 
         assert_win(1000);
-        assert_screen(List.of(
+        assert_spinResult_screen(List.of(
                 List.of("A", "A", "2"),
                 List.of("A", "A", "2"),
                 List.of("A", "2", "1")
@@ -313,4 +317,50 @@ class SlotScoreCalculatorTest {
                         List.of("A", "2", "1")
                 )));
     }
+
+    @Test
+    void test11_recovery() throws WrongGameModeException {
+        assume_sut(List.of(
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2"),
+                List.of("A", "1", "2")
+        ), List.of(
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2"),
+                List.of("A", "A", "2")
+        ));
+
+        Mockito.when(random.nextInt(Mockito.anyInt())).thenReturn(1, 1, 1, 1, 2);
+
+        do_spin_base(10);
+
+        Memento memento = sut.toMemento();
+
+//        assume_sut(List.of(
+//                List.of("A", "1", "2"),
+//                List.of("A", "1", "2"),
+//                List.of("A", "1", "2"),
+//                List.of("A", "1", "2"),
+//                List.of("A", "1", "2")
+//        ), List.of(
+//                List.of("A", "A", "2"),
+//                List.of("A", "A", "2"),
+//                List.of("A", "A", "2")
+//        ));
+
+        sut.restore(memento);
+
+
+        assert_sut_screen(List.of(
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("1", "2", "A"),
+                List.of("2", "A", "1")
+        ));
+    }
+
+
 }
